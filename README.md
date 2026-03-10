@@ -45,43 +45,44 @@
 ## 🏗️ 技术架构
 
 ```mermaid
-graph TD
-    subgraph "法律文本理解与咨询系统"
-        direction TB
-        
-        subgraph Data["数据层 (Data Layer)"]
-            D1["DISC-Law-SFT (20k语料)"]
-            D2["数据预处理 & 质量评估"]
+graph LR
+    %% 全局定义
+    classDef default fill:#0d1117,stroke:#30363d,color:#c9d1d9,stroke-width:1px;
+    classDef layer fill:#001529,stroke:#1677ff,color:#fff,stroke-width:2px,font-weight:bold;
+    classDef component fill:#111d2c,stroke:#177ddc,color:#e6f4ff;
+    classDef highlight fill:#003a8c,stroke:#00b96b,color:#fff,stroke-width:2px;
+
+    subgraph System ["法律文本理解与咨询系统"]
+        direction LR
+
+        subgraph DATA ["📂 数据层"]
+            D1["DISC-Law-SFT"]
+            D2["数据清洗 / 质量评估"]
             D1 --> D2
         end
 
-        subgraph Model["模型层 (Model Layer)"]
-            M1["Qwen2.5-3B + LoRA"]
-            M2["LLaMA-Factory 训练框架"]
+        subgraph MODEL ["🧠 模型层"]
+            M1["Qwen2.5-3B核心"]
+            M2["LoRA 适配器"]
+            M3["LLaMA-Factory"]
             M1 --- M2
+            M2 -.-> M3
         end
 
-        subgraph App["应用层 (Application Layer)"]
+        subgraph APP ["🚀 应用层"]
             A1["Gradio WebUI"]
-            A2["用户交互 & 多轮对话"]
+            A2["流式响应 / 多轮对话"]
             A1 --> A2
         end
 
-        %% 核心逻辑流
-        D2 == "微调数据" ==> M1
-        M1 == "流式响应" ==> A1
+        D2 == "微调驱动" ==> M2
+        M1 == "推理服务" ==> A1
     end
 
-    %% 样式美化
-    style Data fill:#f9f,stroke:#333,stroke-width:2px
-    style Model fill:#bbf,stroke:#333,stroke-width:2px
-    style App fill:#bfb,stroke:#333,stroke-width:2px
-    style D1 fill:#fff
-    style D2 fill:#fff
-    style M1 fill:#fff
-    style M2 fill:#fff
-    style A1 fill:#fff
-    style A2 fill:#fff
+    %% 应用样式
+    class DATA,MODEL,APP layer;
+    class D1,D2,M1,M2,M3,A1,A2 component;
+    class M1 highlight;
 ```
 
 ---
