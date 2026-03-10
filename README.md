@@ -45,28 +45,43 @@
 ## 🏗️ 技术架构
 
 ```mermaid
-graph LR
-    A[自研 Tokenizer] -->|BBPE 算法| B[预训练 Pretrain]
-    B -->|7B Tokens| C[指令微调 SFT]
-    C -->|2M 指令数据| D[模型评测]
-
-    subgraph "Core Architecture"
+graph TD
+    subgraph "法律文本理解与咨询系统"
         direction TB
-        T1[Decoder-only]
-        T2[RMSNorm / RoPE]
-        T3[GQA / SwiGLU]
-        T1 --- T2 --- T3
+        
+        subgraph Data["数据层 (Data Layer)"]
+            D1["DISC-Law-SFT (20k语料)"]
+            D2["数据预处理 & 质量评估"]
+            D1 --> D2
+        end
+
+        subgraph Model["模型层 (Model Layer)"]
+            M1["Qwen2.5-3B + LoRA"]
+            M2["LLaMA-Factory 训练框架"]
+            M1 --- M2
+        end
+
+        subgraph App["应用层 (Application Layer)"]
+            A1["Gradio WebUI"]
+            A2["用户交互 & 多轮对话"]
+            A1 --> A2
+        end
+
+        %% 核心逻辑流
+        D2 == "微调数据" ==> M1
+        M1 == "流式响应" ==> A1
     end
 
-    subgraph "Training Pipeline"
-        P1[MinHash 去重]
-        P2[DDP + NCCL 分布式]
-        P3[bfloat16 + compile]
-        P1 --> P2 --> P3
-    end
-
-    B -.-> P1
-    B -.-> T1
+    %% 样式美化
+    style Data fill:#f9f,stroke:#333,stroke-width:2px
+    style Model fill:#bbf,stroke:#333,stroke-width:2px
+    style App fill:#bfb,stroke:#333,stroke-width:2px
+    style D1 fill:#fff
+    style D2 fill:#fff
+    style M1 fill:#fff
+    style M2 fill:#fff
+    style A1 fill:#fff
+    style A2 fill:#fff
 ```
 
 ---
