@@ -44,6 +44,7 @@
 
 ## 🏗️ 技术架构
 
+```mermaid
 graph LR
     A[自研 Tokenizer] -->|BBPE 算法| B[预训练 Pretrain]
     B -->|7B Tokens| C[指令微调 SFT]
@@ -66,6 +67,7 @@ graph LR
 
     B -.-> P1
     B -.-> T1
+```
 
 ---
 
