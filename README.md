@@ -46,42 +46,43 @@
 
 ```mermaid
 graph LR
-    %% 全局定义
-    classDef default fill:#0d1117,stroke:#30363d,color:#c9d1d9,stroke-width:1px;
-    classDef layer fill:#001529,stroke:#1677ff,color:#fff,stroke-width:2px,font-weight:bold;
-    classDef component fill:#111d2c,stroke:#177ddc,color:#e6f4ff;
-    classDef highlight fill:#003a8c,stroke:#00b96b,color:#fff,stroke-width:2px;
+    %% 全局样式定义：简约浅色、深色文字
+    classDef default fill:#ffffff,stroke:#d1d5db,color:#374151,stroke-width:1px;
+    classDef layer fill:#f8fafc,stroke:#cbd5e1,color:#0f172a,stroke-width:2px,font-weight:bold;
+    classDef component fill:#ffffff,stroke:#94a3b8,color:#334155,stroke-width:1px;
+    classDef highlight fill:#eff6ff,stroke:#3b82f6,color:#1e40af,stroke-width:2px;
 
     subgraph System ["法律文本理解与咨询系统"]
         direction LR
 
-        subgraph DATA ["📂 数据层"]
-            D1["DISC-Law-SFT"]
-            D2["数据清洗 / 质量评估"]
+        subgraph DATA ["数据层"]
+            D1["DISC-Law-SFT (20k语料)"]
+            D2["数据清洗与质量评估"]
             D1 --> D2
         end
 
-        subgraph MODEL ["🧠 模型层"]
-            M1["Qwen2.5-3B核心"]
+        subgraph MODEL ["模型层"]
+            M1["Qwen2.5-3B 核心"]
             M2["LoRA 适配器"]
-            M3["LLaMA-Factory"]
+            M3["LLaMA-Factory 框架"]
             M1 --- M2
             M2 -.-> M3
         end
 
-        subgraph APP ["🚀 应用层"]
+        subgraph APP ["应用层"]
             A1["Gradio WebUI"]
-            A2["流式响应 / 多轮对话"]
+            A2["多轮对话与流式响应"]
             A1 --> A2
         end
 
-        D2 == "微调驱动" ==> M2
-        M1 == "推理服务" ==> A1
+        %% 跨层调用连线
+        D2 == "提供微调数据" ==> M2
+        M1 == "提供推理服务" ==> A1
     end
 
     %% 应用样式
     class DATA,MODEL,APP layer;
-    class D1,D2,M1,M2,M3,A1,A2 component;
+    class D1,D2,M2,M3,A1,A2 component;
     class M1 highlight;
 ```
 
