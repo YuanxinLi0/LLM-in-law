@@ -1,0 +1,5 @@
+model_name_or_path: qwen2.5-3b-instruct
+adapter_name_or_path: saves/qwen2.5-3b-instruct/lora/legal_sft
+template: qwen
+infer_backend: huggingface
+trust_remote_code: true
